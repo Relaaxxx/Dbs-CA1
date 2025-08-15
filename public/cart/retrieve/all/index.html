@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart Management</title>
+    <link href="/main.css" rel="stylesheet" />
+    <link href="/index.css" rel="stylesheet" />
+    <link href="./index.css" rel="stylesheet" />
+    <script src="./index.js" type="text/javascript"></script>
+    <script src="../../../auth.js" defer></script>
+    <script src="../../../header.js" defer></script>
+</head>
+
+<body>
+    <div id="header-container"></div>
+
+    <section>
+        <div>
+            <h1>Shopping Cart</h1>
+
+       
+            <div id="promotion" style="background-color: #fffae6; border: 1px solid #ffd700; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
+                <strong>Special Offer:</strong> Buy 2 Plush Teddy Bears and get <span style="color: #d9534f;">20% off</span>!
+            </div>
+             <div id="promotion" style="background-color: #fffae6; border: 1px solid #ffd700; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
+                <strong>Special Offer:</strong> Buy 3 Stainless Steel knife sets and get <span style="color: #d9534f;">15% off</span>!
+            </div>
+
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Product description</th>
+                        <th>Country</th>
+                        <th>Sub-total Price</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Update Quantity</th>
+                        <th>Delete Item</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-items-tbody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section>
+        <div class="cart-summary-main">
+            <h1>Cart Summary</h1>
+            <div id="cart-summary"></div>
+        </div>
+        <button id="checkout-button">Checkout</button>
+    </section>
+</body>
+
+</html>

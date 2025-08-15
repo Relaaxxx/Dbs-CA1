@@ -1,0 +1,146 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model member {
+  id         Int         @id @default(autoincrement())
+  username   String      @unique @db.VarChar(50)
+  email      String      @unique @db.VarChar(50)
+  dob        DateTime    @db.Date
+  password   String      @db.VarChar(255)
+  role       Int
+  gender     String      @db.Char(1)
+
+  comment    comment[]
+  memberRole memberRole  @relation(fields: [role], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_member_role_id")
+  review     review[]
+  saleOrder  saleOrder[]
+  cart       cart[]
+}
+
+model memberRole {
+  id     Int      @id @default(autoincrement())
+  name   String?  @db.VarChar(25)
+  member member[]
+
+  @@map("member_role")
+}
+
+model comment {
+  id        Int       @id @default(autoincrement())
+  reviewId  Int       @map("review_id")
+  memberId  Int       @map("member_id")
+  content   String
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+
+  member    member    @relation(fields: [memberId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_comment_member")
+  review    review    @relation(fields: [reviewId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_comment_review")
+}
+
+model product {
+  id             Int             @id @default(autoincrement())
+  name           String?         @db.VarChar(255)
+  description    String?
+  unitPrice      Decimal         @map("unit_price") @db.Decimal
+  stockQuantity  Decimal         @default(0) @map("stock_quantity") @db.Decimal
+  country        String?         @db.VarChar(100)
+  productType    String?         @map("product_type") @db.VarChar(50)
+  imageUrl       String?         @default("/images/product.png") @map("image_url") @db.VarChar(255)
+  manufacturedOn DateTime?       @map("manufactured_on") @db.Timestamp(6)
+
+  review         review[]
+  saleOrderItem  saleOrderItem[]
+  cartItem       cartItem[]
+  discountProduct discountProduct[]
+}
+
+model review {
+  id        Int       @id @default(autoincrement())
+  memberId  Int       @map("member_id")
+  productId Int       @map("product_id")
+  rating    Int?
+  content   String?
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt DateTime? @map("updated_at") @db.Timestamp(6)
+
+  comment   comment[]
+  member    member    @relation(fields: [memberId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_review_member")
+  product   product   @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_review_product")
+}
+
+model saleOrder {
+  id            Int             @id @default(autoincrement())
+  memberId      Int?            @map("member_id")
+  orderDatetime DateTime        @map("order_datetime") @db.Timestamp(6)
+  status        String?         @db.VarChar(10)
+
+  member        member?         @relation(fields: [memberId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_sale_order_member")
+  saleOrderItem saleOrderItem[]
+
+  @@map("sale_order")
+}
+
+model saleOrderItem {
+  id          Int       @id @default(autoincrement())
+  saleOrderId Int       @map("sale_order_id")
+  productId   Int       @map("product_id")
+  quantity    Decimal   @db.Decimal
+
+  product     product   @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_sale_order_item_product")
+  saleOrder   saleOrder @relation(fields: [saleOrderId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_sale_order_item_sale_order")
+
+  @@map("sale_order_item")
+}
+
+model cart {
+  id        Int       @id @default(autoincrement())
+  memberId  Int       @map("member_id")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt DateTime? @map("updated_at") @db.Timestamp(6)
+
+  member    member    @relation(fields: [memberId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_cart_member")
+  cartItems cartItem[]
+}
+
+model cartItem {
+  id        Int       @id @default(autoincrement())
+  cartId    Int       @map("cart_id")
+  productId Int       @map("product_id")
+  quantity  Decimal   @default(1) @db.Decimal
+  addedAt   DateTime  @default(now()) @map("added_at") @db.Timestamp(6)
+
+  cart      cart      @relation(fields: [cartId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_cart_item_cart")
+  product   product   @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_cart_item_product")
+
+  @@unique([cartId, productId]) // Prevents duplicates in the same cart
+}
+
+model discount {
+  id           Int       @id @default(autoincrement())
+  type         String    @db.VarChar(50) // "PRODUCT" or "SHIPPING"
+  description  String?
+  minQuantity  Int?      // Minimum quantity to activate discount
+  minAmount    Decimal?  @db.Decimal
+  discountRate Decimal   @db.Decimal   // Percentage off (0-100)
+  startDate    DateTime
+  endDate      DateTime
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime? @map("updated_at")
+
+  discountProducts discountProduct[]
+}
+
+model discountProduct {
+  id         Int      @id @default(autoincrement())
+  discountId Int      @map("discount_id")
+  productId  Int      @map("product_id")
+
+  discount   discount @relation(fields: [discountId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_discount_product_discount")
+  product    product  @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_discount_product_product")
+}
+

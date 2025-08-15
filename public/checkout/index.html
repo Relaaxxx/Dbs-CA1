@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+    <link href="/main.css" rel="stylesheet">
+    <link href="/index.css" rel="stylesheet">
+    <script src="./index.js" defer></script>
+    <script src="../auth.js" defer></script>
+    <script src="../header.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        #cart-summary {
+            text-align: right;
+            font-size: 1.2em;
+        }
+        .btn {
+            padding: 5px 10px;
+            cursor: pointer;
+            border: none;
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-container"></div>
+
+    <section>
+        <h1>Checkout</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>Discounted Price</th>
+                </tr>
+            </thead>
+            <tbody id="cart-items-tbody">
+                <!-- Cart items will be populated here by JS -->
+            </tbody>
+        </table>
+
+        <div id="cart-summary">
+            <!-- Total price will be displayed here -->
+        </div>
+
+        <div style="text-align: right; margin-top: 20px;">
+            <button id="checkout-button" class="btn">Proceed to Payment</button>
+        </div>
+    </section>
+</body>
+</html>

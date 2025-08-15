@@ -1,0 +1,55 @@
+<html>
+
+<head>
+    <title>Dashboard Management</title>
+    <link href="/main.css" rel="stylesheet" />
+    <link href="/index.css" rel="stylesheet" />
+    <script src="./index.js" type="text/javascript"></script>
+    <script src="../../authAdmin.js" defer></script>
+    <script src="../../headerAdmin.js" defer></script>
+</head>
+
+<body>
+    <div id="admin-header-container"></div>
+
+    <section>
+        <!-- 
+        This section represents the sales order summary on the admin dashboard.
+        You can change the section code here to modify the layout or content 
+        of the sales order summary as needed.
+        -->
+        <h1>Sales Order Summary</h1>
+        <div>
+            <form class="search">
+                    <div class="form-group">
+                <label>Gender</label><br>
+                <input type="radio" id="male" name="gender" value="male" checked>
+                <label for="male">Male</label><br>
+                <input type="radio" id="female" name="gender" value="female">
+                <label for="female">Female</label>
+            </div>
+            <div class="form-group">
+                <label for="totalSpending">Min Total Spending</label><br>
+                <input type="text" id="totalSpending" name="totalSpending" >
+            </div>
+            <div class="form-group">
+                <label for="memberSpending">Min Member Total Spending</label><br>
+                <input type="text" id="memberSpending" name="memberSpending" >
+            </div>
+                <!--
+                You can add form-related code here, including HTML form elements such as <form>, <input>, <label>, <button>, etc., 
+                to create a suitable user input interface. 
+                -->
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <h1>Sale Orders Table</h1>
+        <table border="1">
+            <!--             
+            You can add table code here to display structured data in rows and columns.
+            -->
+        </table>
+    </section>
+</body>
+
+</html>
